@@ -7,12 +7,10 @@ import smbus
 bus = smbus.SMBus(1)
 
 device = 0x04
-DServo0 = 1500 #DServo0 = L/R. 1500uS = Center. 2200uS = Furthest Left. 700uS = Furthest Right.DServo0 = L/R. 1500uS = Center. 2200uS = Furthest Left. 700uS = Furthest Right.
-DServo0Min = 700
-DServo0Max = 2200
-DServo1 = 2300 #DServo1 = Front/Back. 2200uS = Forward. 700uS = Backward.DServo1 = Front/Back. 2200uS = Forward. 700uS = Backward.
-DServo1Min = 700
-DServo1Max = 2300
+
+# Define Servos as List
+DServo0 = [700,2200,1500] # DServo0 L/R: Left:700, Right: 2200 Center:1500 
+DServo1 = [700,2300,2300] # DServo1 TIlt: Backard: 700, Forward: 2300, Max: 2300
 
 def limit(n):
 	if n > 1:
@@ -30,29 +28,30 @@ j.init()
 print 'Initialized Joystick : %s' % j.get_name()
 		
 pygame.event.pump()
+
+if j.get_button(0): # Left
+	if DServo0 < DServo0[1]:
+		DServo0 = DServo0 + 100
+		print DServo0
+if j.get_button(2): # Right
+	if DServo0 > DServo0[0]:
+		DServo0 = DServo0 - 100
+		print DServo0
+if j.get_button(1): # Down
+	if DServo1 < DServo1[1]:
+		DServo1 = DServo1 + 100
+		print DServo1
+if j.get_button(3): # Up
+	if DServo1 > DServo1[0]:
+		DServo1 = DServo1 - 100
+		print DServo1
+if j.get_button(9): # Start. Reset to Default positions
+	DServo0 = DServo0[2]
+	DServo1 = DServo1[2]
+
 x = j.get_axis(0)
 y = j.get_axis(1)
 z = j.get_axis(2)
-
-if j.get_button(0):
-	if DServo0 < DServo0Max:
-		DServo0 = DServo0 + 100
-		print DServo0
-if j.get_button(2):
-	if DServo0 > DServo0Min:
-		DServo0 = DServo0 - 100
-		print DServo0
-if j.get_button(1):
-	if DServo1 < DServo1Max:
-		DServo1 = DServo1 + 100
-		print DServo1
-if j.get_button(3):
-	if DServo1 > DServo1Min:
-		DServo1 = DServo1 - 100
-		print DServo1
-if j.get_button(9):
-	DServo0 = 1500
-	DServo1 = 2300
 
 left  = y - z
 right = y + z
