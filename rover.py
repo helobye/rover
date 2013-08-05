@@ -8,7 +8,7 @@ bus = smbus.SMBus(1)
 
 device = 0x04
 
-# Define Servos as List
+# Servos. Min, Max, Default
 DServo0 = [700,2200,1500] # DServo0 L/R: Left:700, Right: 2200 Center:1500 
 DServo1 = [700,2300,2300] # DServo1 TIlt: Backard: 700, Forward: 2300, Max: 2300
 
