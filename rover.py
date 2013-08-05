@@ -18,7 +18,7 @@ j = pygame.joystick.Joystick(0) # j = Joystick 0
 j.init() # Initialize Joystick 0
 print 'Initialized Joystick : %s' % j.get_name()
 
-def tankdrive(x,y):
+def tankdrive(x,y): # Converted from JS found here: goodrobot.com/en/2009/09/tank-drive-via-joystick-control
 	z = math.sqrt(x*x + y*y)	# First hypotenuse
 	if z == 0: # Fix to prevent division by Zero
 		z = 0.1
