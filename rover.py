@@ -1,6 +1,6 @@
-import pygame
-import time
-import smbus
+import pygame	# Used for Joystick
+import time	# Used for Sleep
+import smbus	# Used for i2c
 
 bus = smbus.SMBus(1) # RPi rev 2 = SMBus(1)
 
@@ -12,10 +12,9 @@ DServo1 = [700,2300,2300] # DServo1 TIlt: Backard: 700, Forward: 2300, Max: 2300
 DServo0Cur = DServo0[2]
 DServo1Cur = DServo1[2]
 
-pygame.init() # Call PyGame
+pygame.init() # Call Pygame
 j = pygame.joystick.Joystick(0) # j = Joystick 0
 j.init() # Initialize Joystick 0
-pygame.event.pump()
 print 'Initialized Joystick : %s' % j.get_name()
 
 def limit(n):
@@ -27,6 +26,7 @@ def limit(n):
 		return n
 
 while True:
+	pygame.event.pump() # Process Pygame event handlers
 		
 	if j.get_button(0): # Left
 		if DServo0Cur < DServo0[1]:
