@@ -11,6 +11,8 @@ device = 0x04
 # Servos. Min, Max, Default
 DServo0 = [700,2200,1500] # DServo0 L/R: Left:700, Right: 2200 Center:1500 
 DServo1 = [700,2300,2300] # DServo1 TIlt: Backard: 700, Forward: 2300, Max: 2300
+DServo0Cur = DServo0[2]
+DServo1Cur = DServo1[2]
 
 def limit(n):
 	if n > 1:
@@ -30,24 +32,24 @@ print 'Initialized Joystick : %s' % j.get_name()
 pygame.event.pump()
 
 if j.get_button(0): # Left
-	if DServo0 < DServo0[1]:
-		DServo0 = DServo0 + 100
-		print DServo0
+	if DServo0Cur < DServo0[1]:
+		DServo0Cur = DServo0Cur + 100
+		print DServo0Cur
 if j.get_button(2): # Right
-	if DServo0 > DServo0[0]:
-		DServo0 = DServo0 - 100
-		print DServo0
+	if DServo0Cur > DServo0[0]:
+		DServo0Cur = DServo0Cur - 100
+		print DServo0Cur
 if j.get_button(1): # Down
-	if DServo1 < DServo1[1]:
-		DServo1 = DServo1 + 100
-		print DServo1
+	if DServo1Cur < DServo1[1]:
+		DServo1Cur = DServo1Cur + 100
+		print DServo1Cur
 if j.get_button(3): # Up
-	if DServo1 > DServo1[0]:
-		DServo1 = DServo1 - 100
-		print DServo1
+	if DServo1Cur > DServo1[0]:
+		DServo1Cur = DServo1Cur - 100
+		print DServo1Cur
 if j.get_button(9): # Start. Reset to Default positions
-	DServo0 = DServo0[2]
-	DServo1 = DServo1[2]
+	DServo0Cur = DServo0[2]
+	DServo1Cur = DServo1[2]
 
 x = j.get_axis(0)
 y = j.get_axis(1)
@@ -85,7 +87,7 @@ pwm_z = abs(move_z)
 	
 print(pwm_y,drive_y,pwm_z,drive_z)
 try:
-	bus.write_i2c_block_data(device,1,[drive_y, drive_z, pwm_y,pwm_z,DServo0/10,DServo1/10])
+	bus.write_i2c_block_data(device,1,[drive_y, drive_z, pwm_y,pwm_z,DServo0Cur/10,DServo1Cur/10])
 except IOError, err:
 	print "Lost I2C"
 time.sleep(0.1)
