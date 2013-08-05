@@ -84,9 +84,9 @@ while True:
 	pwm_x = abs(move_x)
 	
 	print(pwm_y,drive_y,pwm_x,drive_x)
-	try:
+	#try:
 		#bus.write_i2c_block_data(device,1,[drive_y, drive_x, pwm_y,pwm_x,DServo0Cur/10,DServo1Cur/10])
-	except IOError, err:
-		print "Lost I2C"
+	#except IOError, err:
+	#	print "Lost I2C"
 		
 	time.sleep(0.1) # Sleep 100ms
