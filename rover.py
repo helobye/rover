@@ -1,6 +1,7 @@
 import pygame	# Used for Joystick
 import time	# Used for Sleep
 import smbus	# Used for i2c
+import math	# Used for tankdrive
 
 bus = smbus.SMBus(1) # RPi rev 2 = SMBus(1)
 
@@ -17,13 +18,45 @@ j = pygame.joystick.Joystick(0) # j = Joystick 0
 j.init() # Initialize Joystick 0
 print 'Initialized Joystick : %s' % j.get_name()
 
-def limit(n):
-	if n > 1:
-		return 1
-	elif n < -1:
-		return -1
+def tankdrive(x,y):
+	z = math.sqrt(x*x + y*y)	# First hypotenuse
+	if z == 0: # Fix to prevent division by Zero
+		z = 0.1
+	rad = math.acos(abs(x)/z)	# angle in radians
+	angle = rad*180/math.pi		# and in degrees
+
+	# Now angle indicates the measure of turn along a straight line,
+	# with an angle o, the turn co-efficient is same.
+	# This applies for angles between 0-90, with angle 0 the co-eff is -1
+	# With angle 45, the co-efficient is 0 and with angle 90, it is 1
+	tcoeff = -1 + (angle/90)*2
+	turn = tcoeff * abs(abs(y) - abs(x))
+	turn = round(turn*100)/100
+	
+	move = max(abs(y),abs(x)) # And max of y or x is the movement
+	
+	if (x >= 0 and y >= 0) or (x < 0 and  y < 0): # First and third quadrant
+		left = move
+		right = turn
 	else:
-		return n
+		right = move
+		left = turn
+	
+	if y < 0:
+		left = 0 - left
+		right = 0 - right
+
+	if (left < 0):
+		l_drive = 2
+	else:
+		l_drive = 0
+
+	if (right < 0):
+		r_drive = 2
+	else:
+		r_drive = 0
+
+	return int(round(abs(left) * 250, 0)), l_drive, int(round(abs(right) * 250, 0)), r_drive
 
 while True:
 	pygame.event.pump() # Process Pygame event handlers
@@ -48,45 +81,16 @@ while True:
 		DServo0Cur = DServo0[2]
 		DServo1Cur = DServo1[2]
 
-	# Poll Joystick for XYZ cordinates
-	#z = j.get_axis(0)
-	y = j.get_axis(1) # Forward/Reverse
+	# Poll Joystick for X/Y cordinates
 	x = j.get_axis(2) # Left/Right
+	y = j.get_axis(1) # Forward/Reverse
 
-	# Define Tank Style controls
-	left  = y - x
-	right = y + x
-        
-        # Make sure left, right values do not exceed maximum
-	maxi = max(left, right)
-        
-	if maxi > 1:
-		left = left/maxi
-		right = right/maxi
-    
-	left = limit(left)
-	right = limit(right)
-	
-	# Y axis (Forward/Reverse)
-	move_y = int(round(left * 250, 0))
-	if (move_y < 0):
-		drive_y = 2
-	else:
-		drive_y = 0
-	pwm_y = abs(move_y)
+	left, l_drive, right, r_drive = tankdrive(x,y) # Call tankdrive()
 
-	# X Axis (Left/Right)
-	move_x = int(round(right * 250, 0))
-	if (move_x < 0):
-		drive_x = 2
-	else:
-		drive_x = 0
-	pwm_x = abs(move_x)
-	
-	print(pwm_y,drive_y,pwm_x,drive_x)
-	#try:
-		#bus.write_i2c_block_data(device,1,[drive_y, drive_x, pwm_y,pwm_x,DServo0Cur/10,DServo1Cur/10])
-	#except IOError, err:
-	#	print "Lost I2C"
+	print(left,l_drive,right,r_drive)
+	try:
+		bus.write_i2c_block_data(device, 1, [r_drive, l_drive, right, left, DServo0Cur/10, DServo1Cur/10])
+	except IOError, err:
+		print "Lost I2C"
 		
 	time.sleep(0.1) # Sleep 100ms
