@@ -1,12 +1,10 @@
 import smbus  # Used for i2c
 import socket # Used for client communications
-#import sys
-import select
 
 UDP_IP = "192.168.1.10" # UDP Server
 UDP_PORT = 6005		# UDP Port
 sock = socket.socket(socket.AF_INET, # Internet
-					socket.SOCK_DGRAM) # UDP
+		socket.SOCK_DGRAM) # UDP
 sock.bind((UDP_IP, UDP_PORT))
 
 bus = smbus.SMBus(1) # RPi rev 2 = SMBus(1)
