@@ -40,8 +40,8 @@ while True:
         left = recv_data[3]
         DServo0Cur = recv_data[4]
         DServo1Cur = recv_data[5]
-        r0state = recv_data[6]
-        r1state = recv_data[7]
+        r0State = recv_data[6]
+        r1State = recv_data[7]
 
         print r_drive, l_drive, right, left, DServo0Cur, DServo1Cur, r0state, r1state
         
