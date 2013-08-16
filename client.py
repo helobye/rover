@@ -1,5 +1,5 @@
-import pygam	# Used for Joystick
-import tim	# Used for Sleep
+import pygame	# Used for Joystick
+import time	# Used for Sleep
 import math	# Used for tankdrive
 import socket	# Used for client communications
 
@@ -24,8 +24,8 @@ sock = socket.socket(socket.AF_INET, # Internet
 bufferSize = 1024   # room for message
 
 # Initialize Relay States
-r0state = 0
-r1state = 0
+r0State = 0
+r1State = 0
 
 def tankdrive(x,y): # Translated from JS @ goodrobot.com/en/2009/09/tank-drive-via-joystick-control
 	z = math.sqrt(x*x + y*y)	# First hypotenuse
@@ -91,16 +91,16 @@ while True:
 		DServo1Cur = DServo1[2]
 		
 	if j.get_button(7): # ?. Trigger Relay 0
-		if r0state == 0:
-			r0state = 1
+		if r0State == 0:
+			r0State = 1
 		else
-			r0state = 0
+			r0State = 0
 
 	if j.get_button(8): # ?. Trigger Relay 1
-		if r1state == 0:
-			r1state = 1
+		if r1State == 0:
+			r1State = 1
 		else
-			r1state = 0
+			r1State = 0
 
 	# Poll Joystick for X/Y cordinates
 	x = j.get_axis(2) # Left/Right
@@ -108,7 +108,7 @@ while True:
 
 	left, l_drive, right, r_drive = tankdrive(x,y) # Call tankdrive()
 
-	sock.sendto(bytes([r_drive, l_drive, right, left, DServo0Cur, DServo1Cur, r0state, r1state]), (UDP_IP, UDP_PORT))
+	sock.sendto(bytes([r_drive, l_drive, right, left, DServo0Cur, DServo1Cur, r0State, r1State]), (UDP_IP, UDP_PORT))
 	
 	print(left,l_drive,right,r_drive)
 	
