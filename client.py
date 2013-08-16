@@ -90,13 +90,13 @@ while True:
 		DServo0Cur = DServo0[2]
 		DServo1Cur = DServo1[2]
 		
-	if j.get_button(4): # ?. Trigger Relay 0
+	if j.get_button(4): # Left Trigger. Relay 0
 		if r0State == 0:
 			r0State = 1
 		else:
 			r0State = 0
 
-	if j.get_button(5): # ?. Trigger Relay 1
+	if j.get_button(5): # Right Trigger. Relay 1
 		if r1State == 0:
 			r1State = 1
 		else:
