@@ -1,7 +1,8 @@
-import pygame # Used for Joystick
-import time    # Used for Sleep
-import math	  # Used for tankdrive
-import socket # Used for client communications
+import pygam	# Used for Joystick
+import tim	# Used for Sleep
+import math	# Used for tankdrive
+import socket	# Used for client communications
+
 
 # Servos. Min, Max, Default
 DServo0 = [700,2200,1500] # DServo0 L/R: Left:700, Right: 2200 Center:1500 
@@ -9,23 +10,27 @@ DServo1 = [700,2300,2300] # DServo1 TIlt: Backard: 700, Forward: 2300, Max: 2300
 DServo0Cur = DServo0[2]
 DServo1Cur = DServo1[2]
 
+# Initialize Joystick
 pygame.init() # Call Pygame
 j = pygame.joystick.Joystick(0) # j = Joystick 0
 j.init() # Initialize Joystick 0
 print "Initialized Joystick : %s" % j.get_name()
 
-UDP_IP = "rover.helo.local" # UDP Server
-UDP_PORT = 6005				# UDP Port
-
+# Initialize UDP connection
+UDP_IP = "rover.helo.local"	# UDP Server
+UDP_PORT = 6005			# UDP Port
 sock = socket.socket(socket.AF_INET, # Internet
-					socket.SOCK_DGRAM) # UDP
-
+	socket.SOCK_DGRAM) # UDP
 bufferSize = 1024   # room for message
 
-def tankdrive(x,y): # Converted from JS found here: goodrobot.com/en/2009/09/tank-drive-via-joystick-control
+# Initialize Relay States
+r0state = 0
+r1state = 0
+
+def tankdrive(x,y): # Translated from JS @ goodrobot.com/en/2009/09/tank-drive-via-joystick-control
 	z = math.sqrt(x*x + y*y)	# First hypotenuse
-	if z == 0: # Fix to prevent division by Zero
-		z = 0.1
+	if z == 0			# Fix to prevent division by Zero
+		z = 0.1			# (Set z=0.1)
 	rad = math.acos(abs(x)/z)	# angle in radians
 	angle = rad*180/math.pi		# and in degrees
 
@@ -37,7 +42,7 @@ def tankdrive(x,y): # Converted from JS found here: goodrobot.com/en/2009/09/tan
 	turn = tcoeff * abs(abs(y) - abs(x))
 	turn = round(turn*100)/100
 	
-	move = max(abs(y),abs(x)) # And max of y or x is the movement
+	move = max(abs(y),abs(x))	# And max of y or x is the movement
 	
 	if (x >= 0 and y >= 0) or (x < 0 and  y < 0): # First and third quadrant
 		left = move
@@ -84,6 +89,18 @@ while True:
 	if j.get_button(9): # Start. Reset to Default positions
 		DServo0Cur = DServo0[2]
 		DServo1Cur = DServo1[2]
+		
+	if j.get_button(7): # ?. Trigger Relay 0
+		if r0state == 0:
+			r0state = 1
+		else
+			r0state = 0
+
+	if j.get_button(8): # ?. Trigger Relay 1
+		if r1state == 0:
+			r1state = 1
+		else
+			r1state = 0
 
 	# Poll Joystick for X/Y cordinates
 	x = j.get_axis(2) # Left/Right
@@ -91,7 +108,7 @@ while True:
 
 	left, l_drive, right, r_drive = tankdrive(x,y) # Call tankdrive()
 
-	sock.sendto(bytes([r_drive, l_drive, right, left, DServo0Cur, DServo1Cur]), (UDP_IP, UDP_PORT))
+	sock.sendto(bytes([r_drive, l_drive, right, left, DServo0Cur, DServo1Cur, r0state, r1state]), (UDP_IP, UDP_PORT))
 	
 	print(left,l_drive,right,r_drive)
 	
