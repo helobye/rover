@@ -46,7 +46,6 @@ while True:
         print r_drive, l_drive, right, left, DServo0Cur, DServo1Cur, r0State, r0CurState, r1State, r0CurState
         
 	if r0State != r0CurState:
-		print 'fskfgdjfdk', r0State, r0CurState
 		if r0State == 1:
         		r0.turn_on()
         		r0CurState = 1
