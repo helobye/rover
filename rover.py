@@ -43,21 +43,22 @@ while True:
         r0State = recv_data[6]
         r1State = recv_data[7]
 
-        print r_drive, l_drive, right, left, DServo0Cur, DServo1Cur, r0state, r1state
+        print r_drive, l_drive, right, left, DServo0Cur, DServo1Cur, r0State, r0CurState, r1State, r0CurState
         
 	if r0State != r0CurState:
-		if r0State == 0:
+		print 'fskfgdjfdk', r0State, r0CurState
+		if r0State == 1:
         		r0.turn_on()
         		r0CurState = 1
-        	else
+        	else:
         		r0.turn_off()
         		r0CurState = 0
         
         if r1State != r1CurState:
-        	if r1State == 0:
+        	if r1State == 1:
         		r1.turn_on()
         		r1CurState = 1
-        	else
+        	else:
         		r1.turn_off()
         		r1CurState = 0
         
