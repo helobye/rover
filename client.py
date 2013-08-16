@@ -29,7 +29,7 @@ r1State = 0
 
 def tankdrive(x,y): # Translated from JS @ goodrobot.com/en/2009/09/tank-drive-via-joystick-control
 	z = math.sqrt(x*x + y*y)	# First hypotenuse
-	if z == 0			# Fix to prevent division by Zero
+	if z == 0:			# Fix to prevent division by Zero
 		z = 0.1			# (Set z=0.1)
 	rad = math.acos(abs(x)/z)	# angle in radians
 	angle = rad*180/math.pi		# and in degrees
@@ -90,16 +90,16 @@ while True:
 		DServo0Cur = DServo0[2]
 		DServo1Cur = DServo1[2]
 		
-	if j.get_button(7): # ?. Trigger Relay 0
+	if j.get_button(4): # ?. Trigger Relay 0
 		if r0State == 0:
 			r0State = 1
-		else
+		else:
 			r0State = 0
 
-	if j.get_button(8): # ?. Trigger Relay 1
+	if j.get_button(5): # ?. Trigger Relay 1
 		if r1State == 0:
 			r1State = 1
-		else
+		else:
 			r1State = 0
 
 	# Poll Joystick for X/Y cordinates
