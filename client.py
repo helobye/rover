@@ -16,8 +16,8 @@ def main():
 	print "Initialized Joystick : %s" % j.get_name()
 
 	# Initialize UDP connection
-	#UDP_IP = "rover.helo.local"	# UDP Server
-	UDP_IP = "192.168.43.141"
+	UDP_IP = "rover.helo.local"	# UDP Server
+	#UDP_IP = "192.168.43.141"
 	UDP_PORT = 6005			# UDP Port
 	sock = socket.socket(socket.AF_INET, # Internet
 		socket.SOCK_DGRAM) # UDP
@@ -29,7 +29,7 @@ def main():
 
 	debounce = {}
 
-	def _key_down(key, debounce_val=150):
+	def _key_down(key, debounce_val=100):
 		now = pygame.time.get_ticks()
 		last = debounce.get(key, 0)
 		if now - last > debounce_val:
@@ -103,11 +103,13 @@ def main():
 						DServo0Cur = DServo0[2]
 						DServo1Cur = DServo1[2]
 					elif i == 4: # Button 5 (Left Trigger 1). Switch Relay 0
+						#pygame.time.wait(100) # Sleep 100ms
 						if r0State == 0:
 							r0State = 1
 						else:
 							r0State = 0
 					elif i == 5: # Button 6 (Right Trigger 1). Switch Relay 1
+						#pygame.time.wait(100) # Sleep 100ms
 						if r1State == 0:
 							r1State = 1
 						else:
