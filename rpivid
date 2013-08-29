@@ -18,12 +18,12 @@ case "$1" in
   start)
     echo "Starting rpivid"
     # run application you want to start
-    sleep 10;python /home/pi/rpivid/rpivid.py start
+    raspivid -w 1920 -h 1080 -t 999999999 -fps 20 -b 5000000 -o - | nc -l  -p 5001
     ;;
   stop)
     echo "Stopping rpivid"
     # kill application you want to stop
-    python /home/pi/rpivid/rpivid.py stop
+    pkill -f nc
     ;;
   *)
     echo "Usage: /etc/init.d/rpivid {start|stop}"
