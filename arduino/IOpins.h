@@ -15,4 +15,4 @@
 #define Battery             0  // Analog input 00
 #define RmotorC             6  // Analog input 06
 #define LmotorC             7  // Analog input 07
-#define Charger            13  // Low=ON High=OFF
+//#define Charger            13  // Low=ON High=OFF
