@@ -1,0 +1,34 @@
+#! /bin/sh
+# /etc/init.d/rpivid
+
+### BEGIN INIT INFO
+# Provides: rpivid
+# Required-Start: $remote_fs $syslog $all
+# Required-Stop: $remote_fs $syslog
+# Default-Start: 2 3 4 5
+# Default-Stop: 0 1 6
+# Short-Description: Simple script to start rPi Camera and stream at boot
+# Description: A simple script which will start rPi Camera and stream at boot / sh$
+### END INIT INFO
+
+# If you want a command to always run, put it here
+
+# Carry out specific functions when asked to by the system
+case "$1" in
+  start)
+    echo "Starting rpivid"
+    # run application you want to start
+    sleep 10;python /home/pi/rpivid/rpivid.py start
+    ;;
+  stop)
+    echo "Stopping rpivid"
+    # kill application you want to stop
+    python /home/pi/rpivid/rpivid.py stop
+    ;;
+  *)
+    echo "Usage: /etc/init.d/rpivid {start|stop}"
+    exit 1
+    ;;
+esac
+
+exit 0
