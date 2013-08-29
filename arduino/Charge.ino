@@ -1,4 +1,4 @@
-
+/*
 void Charge()
 {
   if(volts>peakvolt) 
@@ -13,3 +13,4 @@ void Charge()
     peakvolt=0;                                               // reset peakvolt
   } 
 }
+*/
