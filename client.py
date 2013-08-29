@@ -4,8 +4,8 @@ import socket	# Used for client communications
 
 def main():
 	# Servos. Min, Max, Default
-	DServo0 = [700,2200,1500] # DServo0 L/R: Left:700, Right: 2200 Center:1500 
-	DServo1 = [700,2300,2300] # DServo1 TIlt: Backard: 700, Forward: 2300, Max: 2300
+	DServo0 = [700,2300,1450] # DServo0 L/R: Left:700, Right: 2200 Center:1500 
+	DServo1 = [700,1900,1100] # DServo1 TIlt: Backard: 700, Forward: 2300, Max: 2300
 	DServo0Cur = DServo0[2]
 	DServo1Cur = DServo1[2]
 
@@ -16,8 +16,8 @@ def main():
 	print "Initialized Joystick : %s" % j.get_name()
 
 	# Initialize UDP connection
-	UDP_IP = "rover.helo.local"	# UDP Server
-	#UDP_IP = "192.168.43.141"
+	#UDP_IP = "rover.helo.local"
+	UDP_IP = "192.168.2.10"	# UDP Server
 	UDP_PORT = 6005			# UDP Port
 	sock = socket.socket(socket.AF_INET, # Internet
 		socket.SOCK_DGRAM) # UDP
@@ -87,18 +87,18 @@ def main():
 		for i in range(0, j.get_numbuttons()):
 			if j.get_button(i):
 				if _key_down(i) is True:
-					if i == 0:   # Button 1. Pan Left
+					if i == 2:   # Button 1. Pan Left
 						if DServo0Cur < DServo0[1]:
-							DServo0Cur = DServo0Cur + 100
-					elif i == 2: # Button 3. Pan Right
+							DServo0Cur = DServo0Cur + 50
+					elif i == 0: # Button 3. Pan Right
 						if DServo0Cur > DServo0[0]:
-							DServo0Cur = DServo0Cur - 100
-					elif i == 1: # Button 2. Tilt Down
+							DServo0Cur = DServo0Cur - 50
+					elif i == 3: # Button 2. Tilt Down
 						if DServo1Cur < DServo1[1]:
-							DServo1Cur = DServo1Cur + 100
-					elif i == 3: # Button 4. Tilt Up
+							DServo1Cur = DServo1Cur + 50
+					elif i == 1: # Button 4. Tilt Up
 						if DServo1Cur > DServo1[0]:
-							DServo1Cur = DServo1Cur - 100
+							DServo1Cur = DServo1Cur - 50
 					elif i == 9: # Button 9 (Start). Reset Pan/Tilt to Default
 						DServo0Cur = DServo0[2]
 						DServo1Cur = DServo1[2]
@@ -123,7 +123,7 @@ def main():
 
 		left, l_drive, right, r_drive = tankdrive(x,y) # Call tankdrive()
 
-		if left <= 10 and right <= 10: # Stop motor squeal if speed <= 10.
+		if left <= 20 and right <= 20: # Stop motor squeal if speed <= 20.
 			left = 0
 			right = 0
 
