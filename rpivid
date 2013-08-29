@@ -18,7 +18,7 @@ case "$1" in
   start)
     echo "Starting rpivid"
     # run application you want to start
-    raspivid -w 1920 -h 1080 -t 999999999 -fps 20 -b 5000000 -o - | nc -l  -p 5001
+    raspivid -w 1920 -h 1080 -t 999999999 -fps 20 -b 5000000 -o - | nc -l  -p 5001 &
     ;;
   stop)
     echo "Stopping rpivid"
