@@ -26,9 +26,6 @@ int data;
 int error;
 int servo[7];
 
-//char datat[] = "hello";
-//int index = 0;
-
 //-------------------------------------------------------------- define servos ------------------------------------------------------
 
 
@@ -46,8 +43,8 @@ void setup()
   //Serial.begin(115200);
   //------------------------------------------------------------ Initialize I/O pins ------------------------------------------------
   
-  pinMode(Charger,OUTPUT);                                    // change Charger pin to output
-  digitalWrite(Charger,1);                                    // disable current regulator to charge battery
+  //pinMode(Charger,OUTPUT);                                    // change Charger pin to output
+  //digitalWrite(Charger,1);                                    // disable current regulator to charge battery
   Wire.begin(4);                                              // set controller as I2C slave #1
   Wire.onReceive(Control);                                    // Data from Master should be motor speeds
   Wire.onRequest(Sensors);                                    // Send sensor readings on request
@@ -95,8 +92,6 @@ void loop()
   ramps=analogRead(RmotorC);                                  // read right motor current draw
   
   if(volts<lowvolt && cmode==1) cmode=2;                      // if battery voltage falls below nominal then battery needs charging
-  if(cmode==0) Charge();                                      // charge battery
-  digitalWrite(Charger,(cmode>0));                            // set charging current high / low (trickle)   
 
   if (lamps>lmaxamps)                                         // is left motor current exceeding safe limit
   {
@@ -112,16 +107,3 @@ void loop()
     rightoverload=millis();                                   // record time of overload
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
