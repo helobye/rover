@@ -9,11 +9,11 @@ from daemon import Daemon
 class rover_svc(Daemon):
 	def run(self):
 		# Initialize UDP connection
-		UDP_IP = "192.168.1.10" # UDP Server
+		#UDP_IP = "192.168.1.10" # UDP Server
 		UDP_PORT = 6005		# UDP Port
 		sock = socket.socket(socket.AF_INET, # Internet
 		socket.SOCK_DGRAM) # UDP
-		sock.bind((UDP_IP, UDP_PORT))
+		sock.bind(("", UDP_PORT))
 		
 		# Initialize i2c
 		bus = smbus.SMBus(1) # RPi rev 2 = SMBus(1)
