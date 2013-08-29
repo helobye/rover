@@ -2,7 +2,7 @@
 
 #define batvolt            487     // This is the nominal battery voltage reading. Peak charge can only occur above this voltage.
 #define lowvolt            410     // If the battery voltage falls to this level then recharging is required
-#define safetime        600000     // If the battery voltage does not change in this number of milliseconds then stop charging.
+//#define safetime        600000     // If the battery voltage does not change in this number of milliseconds then stop charging.
 
 
 
@@ -19,8 +19,8 @@
 // DServo1 = Front/Back. 2200uS = Forward. 700uS = Backward.
 
 
-#define DServo0           1500     // default position for servo0 on "power up" - 1500uS is center position on most servos
-#define DServo1           2300     // default position for servo1 on "power up" - 1500uS is center position on most servos
+#define DServo0           1450     // default position for servo0 on "power up" - 1500uS is center position on most servos
+#define DServo1           1100     // default position for servo1 on "power up" - 1500uS is center position on most servos
 #define DServo2           1500     // default position for servo2 on "power up" - 1500uS is center position on most servos
 #define DServo3           1500     // default position for servo3 on "power up" - 1500uS is center position on most servos
 #define DServo4           1500     // default position for servo4 on "power up" - 1500uS is center position on most servos
