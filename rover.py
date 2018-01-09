@@ -10,7 +10,7 @@ class rover_svc(Daemon):
 	def run(self):
 		# Initialize UDP connection
 		#UDP_IP = "192.168.1.10" # UDP Server
-		UDP_PORT = 6005		# UDP Port
+		UDP_PORT = 6006		# UDP Port
 		sock = socket.socket(socket.AF_INET, # Internet
 		socket.SOCK_DGRAM) # UDP
 		sock.bind(("", UDP_PORT))
